@@ -1,0 +1,4 @@
+.env
+*.secret
+# Docker socket (always present, never committed)
+.DS_Store

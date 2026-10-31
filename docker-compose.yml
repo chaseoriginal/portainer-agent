@@ -1,0 +1,9 @@
+services:
+  portainer-agent:
+    image: portainer/agent:2.45.3
+    container_name: portainer-agent
+    restart: always
+    ports:
+      - "9001:9001/tcp"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
