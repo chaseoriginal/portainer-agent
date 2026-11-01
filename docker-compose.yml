@@ -2,11 +2,18 @@ services:
   portainer-agent:
     image: portainer/agent:2.45.3
     container_name: portainer-agent
-    # On a Swarm node the agent runs in cluster mode and matches its
-    # container hostname against the swarm task hostname, which embeds
-    # the swarm NODE ID. Without this the agent exits with:
+    # On a Swarm node the agent runs in cluster mode and asks Docker for
+    # its own service name with ContainerInspect(<hostname>) - the hostname
+    # must therefore BE the container name it was given, or the inspect
+    # fails with "No such container" and the agent exits:
     #   FTL main.go:141 > unable to retrieve agent service name from Docker
-    hostname: v858g1oxeecifgraufydfvlke
+    hostname: portainer-agent
+    # The agent resolves the swarm's task names. Go's resolver reports the
+    # LAST resolver's error, so a single unreachable nameserver is fatal
+    # even when the others answer correctly. Pin resolvers that respond.
+    dns:
+      - 10.77.101.24
+      - 10.77.101.25
     restart: always
     ports:
       - "9001:9001/tcp"
