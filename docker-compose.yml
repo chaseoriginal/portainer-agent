@@ -2,6 +2,11 @@ services:
   portainer-agent:
     image: portainer/agent:2.45.3
     container_name: portainer-agent
+    # On a Swarm node the agent runs in cluster mode and matches its
+    # container hostname against the swarm task hostname, which embeds
+    # the swarm NODE ID. Without this the agent exits with:
+    #   FTL main.go:141 > unable to retrieve agent service name from Docker
+    hostname: v858g1oxeecifgraufydfvlke
     restart: always
     ports:
       - "9001:9001/tcp"
